@@ -1,0 +1,130 @@
+===== package.json =====
+{
+  "name": "week1",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.4",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.57.0",
+    "vite": "^8.0.1"
+  }
+}
+
+
+===== vite.config.ts =====
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+
+export default defineConfig({
+  plugins: [react(), tailwindcss()],
+})
+
+
+===== src/main.tsx =====
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+===== src/index.css =====
+@import "tailwindcss";
+
+
+===== src/App.tsx =====
+import React from 'react';
+import { TeamCard } from './components/TeamCard';
+
+export default function App() {
+  return (
+    <div className="p-8 bg-slate-50 min-h-screen flex gap-4 justify-center items-start">
+      <TeamCard name="Alice" role="Frontend Developer" />
+      <TeamCard name="Bob" role="Backend Developer" />
+      <TeamCard name="Charlie" role="UI/UX Designer" />
+    </div>
+  );
+}
+
+
+===== src/components/Profile.tsx =====
+import React, { useState } from 'react';
+
+interface ProfileProps {
+  name: string;
+  role: string;
+}
+
+export function Profile({ name, role }: ProfileProps) {
+  const [likes, setLikes] = useState(0);
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-8 max-w-sm border border-gray-100 text-center">
+      <h2 className="text-2xl font-bold text-slate-800">{name}</h2>
+      <p className="text-slate-500 font-medium mb-6">{role}</p>
+
+      <button
+        onClick={() => setLikes((prev) => prev + 1)}
+        className="w-full bg-blue-50 text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-100 flex justify-center gap-2 transition-colors"
+      >
+        <span>Like</span>
+        <span>‚ù§Ô∏è {likes}</span>
+      </button>
+    </div>
+  );
+}
+
+
+===== src/components/TeamCard.tsx =====
+import React, { useState } from 'react';
+
+interface CardProps {
+  name: string;
+  role: string;
+}
+
+export function TeamCard({ name, role }: CardProps) {
+  const [votes, setVotes] = useState(0);
+
+  return (
+    <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200 text-center">
+      <h2 className="text-xl font-bold text-slate-800">{name}</h2>
+      <p className="text-slate-500 mb-4">{role}</p>
+
+      <button
+        onClick={() => setVotes((prev) => prev + 1)}
+        className="bg-green-100 text-green-700 font-bold py-2 px-4 rounded-lg hover:bg-green-200 transition"
+      >
+        Vote Ì±ç {votes}
+      </button>
+    </div>
+  );
+}
