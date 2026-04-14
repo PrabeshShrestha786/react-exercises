@@ -9,35 +9,26 @@ export default function FeedbackForm() {
   const submitFeedback = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          title,
-          body: message,
-          userId: 1
-        })
-      });
+    const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title,
+        body: message,
+        userId: 1
+      })
+    });
 
-      if (!response.ok) throw new Error("Failed to submit");
+    const data = await response.json();
 
-      const data = await response.json();
-
-      setResponseId(data.id);
-      setIsSubmitted(true);
-
-    } catch (err) {
-      console.error(err);
-    }
+    setResponseId(data.id);
+    setIsSubmitted(true);
   };
 
   if (isSubmitted) {
     return (
-      <div className="success">
-        <h2>Thank you for your feedback!</h2>
+      <div className="success-box">
+        <h3>Thank you for your feedback!</h3>
         <p>Your message was saved with ID: {responseId}</p>
       </div>
     );
@@ -54,7 +45,7 @@ export default function FeedbackForm() {
       />
 
       <textarea
-        placeholder="Your message..."
+        placeholder="Write your message here..."
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         required
