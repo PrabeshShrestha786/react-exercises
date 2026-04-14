@@ -10,9 +10,9 @@ export default function App() {
   const [error, setError] = useState('');
 
   const handleLogin = async (e: React.SyntheticEvent) => {
-    e.preventDefault(); 
+    e.preventDefault();
     setError('');
-    
+
     try {
       const response = await fetch('https://dummyjson.com/auth/login', {
         method: 'POST',
@@ -23,7 +23,7 @@ export default function App() {
       if (!response.ok) throw new Error("Wrong credentials!");
 
       const data = await response.json();
-      
+
       localStorage.setItem('my_real_token', data.accessToken);
       setToken(data.accessToken);
       setIsLoggedIn(true);
@@ -43,41 +43,37 @@ export default function App() {
     <div className="container">
       {isLoggedIn ? (
         <div>
-          <h2>You are logged in!</h2>
-
-          <div style={{ wordBreak: 'break-all', marginBottom: '10px' }}>
-            <strong>Your token:</strong><br/>
-            {token}
+          <div className="topbar">
+            <span>✅ Logged In</span>
+            <div className="token-box">{token}</div>
+            <button className="logout-btn" onClick={handleLogout}>
+              Logout
+            </button>
           </div>
 
-          <button onClick={handleLogout}>Logout</button>
-
-          <hr style={{ margin: '20px 0' }} />
-
-          <h3>Protected Area</h3>
+          <h3>Give Feedback</h3>
           <FeedbackForm />
         </div>
       ) : (
         <form onSubmit={handleLogin}>
-          <h2>JWT Login Test</h2>
+          <h2>Login</h2>
+          <p>Log in to access the feedback form.</p>
 
-          <input 
-            type="text" 
-            placeholder="Username"
+          <input
+            type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
 
-          <input 
-            type="password" 
-            placeholder="Password"
+          <input
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
 
           {error && <p style={{ color: 'red' }}>{error}</p>}
 
-          <button type="submit">Log In (POST)</button>
+          <button type="submit">Log In</button>
         </form>
       )}
     </div>
